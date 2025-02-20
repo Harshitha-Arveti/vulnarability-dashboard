@@ -9,7 +9,6 @@ import os
 import bcrypt
 import requests
 
-load_dotenv()
 client = MongoClient(os.getenv("MONGO_CLIENT"))
 db = client["PCL"]
 users_collection = db["Users"]
