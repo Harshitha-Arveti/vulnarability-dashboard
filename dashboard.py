@@ -235,60 +235,63 @@ if section == '🏠 Home':
 
 
 elif section == '📊 Dashboard':
-    dashboard_dropdown = st.sidebar.selectbox("Select Platform", ['Android', 'iOS', 'Windows'])
-    if dashboard_dropdown == 'Android':
-        st.subheader("Android Vulnerabilities")
-        platform = 'Android'
-        version = st.selectbox("Select Version", list(vulnerabilities[platform].keys()))
-        
-        st.subheader("Test")
-        if st.button("Test"):
-            choice = vulnerabilities['Android']['Version 14'][20]
-            st.write(choice)
-
-        st.subheader("Identify OS")
-        if st.button("Identify OS"):
-            identify = get_os_identifier()
-            st.write(identify)
-        
-        for vuln in vulnerabilities[platform][version]:
-            st.table(vuln)
-
-    elif dashboard_dropdown == 'iOS':
-        st.subheader("iOS Vulnerabilities")
-        platform = 'iOS'
-        version = st.selectbox("Select Version", list(vulnerabilities[platform].keys()))
-
-        st.subheader("Test")
-        if st.button("Test"):
-            st.write("This is not an IOS Device")
-
-        st.subheader("Identify OS")
-        if st.button("Identify OS"):
-            identify = get_os_identifier()
-            st.write(identify)
-
-        for vuln in vulnerabilities[platform][version]:
-            st.table(vuln)
-
+    if st.session_state.login:
+        dashboard_dropdown = st.sidebar.selectbox("Select Platform", ['Android', 'iOS', 'Windows'])
+        if dashboard_dropdown == 'Android':
+            st.subheader("Android Vulnerabilities")
+            platform = 'Android'
+            version = st.selectbox("Select Version", list(vulnerabilities[platform].keys()))
+            
+            st.subheader("Test")
+            if st.button("Test"):
+                choice = vulnerabilities['Android']['Version 14'][20]
+                st.write(choice)
     
-
-    elif dashboard_dropdown == 'Windows':
-        st.subheader("Windows Vulnerabilities")
-        platform = 'Windows'
-        version = st.selectbox("Select Version", list(vulnerabilities[platform].keys()))
+            st.subheader("Identify OS")
+            if st.button("Identify OS"):
+                identify = get_os_identifier()
+                st.write(identify)
+            
+            for vuln in vulnerabilities[platform][version]:
+                st.table(vuln)
+    
+        elif dashboard_dropdown == 'iOS':
+            st.subheader("iOS Vulnerabilities")
+            platform = 'iOS'
+            version = st.selectbox("Select Version", list(vulnerabilities[platform].keys()))
+    
+            st.subheader("Test")
+            if st.button("Test"):
+                st.write("This is not an IOS Device")
+    
+            st.subheader("Identify OS")
+            if st.button("Identify OS"):
+                identify = get_os_identifier()
+                st.write(identify)
+    
+            for vuln in vulnerabilities[platform][version]:
+                st.table(vuln)
+    
         
-        st.subheader("Test")
-        if st.button("Test"):
-            st.write("This is not a Windows device")
-
-        st.subheader("Identify OS")
-        if st.button("Identify OS"):
-            identify = get_os_identifier()
-            st.write(identify)
-
-        for vuln in vulnerabilities[platform][version]:
-            st.table(vuln)
+    
+        elif dashboard_dropdown == 'Windows':
+            st.subheader("Windows Vulnerabilities")
+            platform = 'Windows'
+            version = st.selectbox("Select Version", list(vulnerabilities[platform].keys()))
+            
+            st.subheader("Test")
+            if st.button("Test"):
+                st.write("This is not a Windows device")
+    
+            st.subheader("Identify OS")
+            if st.button("Identify OS"):
+                identify = get_os_identifier()
+                st.write(identify)
+    
+            for vuln in vulnerabilities[platform][version]:
+                st.table(vuln)
+        else:
+            st.error("Please sign in to access the Dashboard feature.")
         
     
     
