@@ -290,8 +290,8 @@ elif section == '📊 Dashboard':
     
             for vuln in vulnerabilities[platform][version]:
                 st.table(vuln)
-        else:
-            st.error("Please sign in to access the Dashboard feature.")
+    else:
+        st.error("Please sign in to access the Dashboard feature.")
         
     
     
