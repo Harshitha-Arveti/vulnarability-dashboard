@@ -4,7 +4,6 @@ from os_ident import get_os_identifier
 import random
 from vulnerability import vulnerabilities
 import pandas as pd
-from dotenv import load_dotenv
 from pymongo import MongoClient
 import os
 import bcrypt
