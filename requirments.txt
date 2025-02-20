@@ -1,6 +1,6 @@
 streamlit
 pandas
-matplotlib
+matplotlib.pyplot
 python-dotenv
 pymongo
 bcrypt
