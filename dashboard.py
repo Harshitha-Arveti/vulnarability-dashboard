@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 from os_ident import get_os_identifier
 import random
 from vulnerability import vulnerabilities
@@ -72,28 +71,14 @@ def visualize_vulnerabilities():
         
         platform = st.selectbox("Select Platform", ['Android', 'iOS', 'Windows'])
 
-        sheet_id = "123PV6s6z0NcmpA8HDkn0fvbWhpEW10zOBn49y_lRN5o"
-        sheet_name = "Vulnerabilities"
-        url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-        df = pd.read_csv(url, dtype=str)
+        if platform == 'Android':
+            st.image("android.png")
+        elif platform == 'iOS':
+            st.image("ios.png")
+        elif platform == 'Windows':
+            st.image("windows.png")
 
-        df_grouped = df[(df['OS'] == platform) & (df['Year'].astype(int) >= 2015) & (df['Year'].astype(int) <= 2025)].groupby('Year').size().reset_index(name='Count')
 
-        fig, ax = plt.subplots()
-        ax.plot(df_grouped['Year'], df_grouped['Count'], color='lime', marker='o', linestyle='-', linewidth=2)
-        ax.set_facecolor('black')
-        fig.patch.set_facecolor('black')
-        ax.spines['bottom'].set_color('white')
-        ax.spines['left'].set_color('white')
-        ax.xaxis.label.set_color('white')
-        ax.yaxis.label.set_color('white')
-        ax.title.set_color('white')
-        ax.tick_params(axis='x', colors='white')
-        ax.tick_params(axis='y', colors='white')
-        ax.set_xlabel('Year')
-        ax.set_ylabel('Number of Vulnerabilities')
-        ax.set_title(f'Vulnerabilities in {platform}')
-        st.pyplot(fig)
     else:
         st.error("Please sign in to access the visualization feature.")
 # Function to display solutions
@@ -254,7 +239,8 @@ elif section == '📊 Dashboard':
         
         st.subheader("Test")
         if st.button("Test"):
-            st.write("This is not an Android Device")
+            choice = vulnerabilities['Android']['Version 14'][20]
+            st.write(choice)
 
         st.subheader("Identify OS")
         if st.button("Identify OS"):
@@ -290,8 +276,7 @@ elif section == '📊 Dashboard':
         
         st.subheader("Test")
         if st.button("Test"):
-            choice = vulnerabilities['Windows']['Version 11'][20]
-            st.write(choice)
+            st.write("This is not a Windows device")
 
         st.subheader("Identify OS")
         if st.button("Identify OS"):
