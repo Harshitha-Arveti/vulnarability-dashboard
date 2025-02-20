@@ -116,7 +116,7 @@ def dashboard_page():
         for vuln in vulnerabilities[platform][version]:
             st.write(vuln)
     else:
-        st.error("Please sign in to access the visualization feature.")
+        st.error("Please sign in to access the Dashboard feature.")
     
 
 # Function to create a Search Engine
@@ -151,7 +151,7 @@ def search_engine():
                     st.write(row['Year'])
                     st.write('---')
     else:
-        st.error("Please sign in to access the visualization feature.")
+        st.error("Please sign in to access the search Engine feature.")
 
 # Function to create Sign-Up and Sign-In (basic mock)
 def auth_page():
