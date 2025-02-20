@@ -2,4 +2,3 @@ streamlit
 pandas
 pymongo
 bcrypt
-python-dotenv
