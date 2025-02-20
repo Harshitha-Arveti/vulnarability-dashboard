@@ -4,13 +4,11 @@ from os_ident import get_os_identifier
 import random
 from vulnerability import vulnerabilities
 import pandas as pd
-from dotenv import load_dotenv
 from pymongo import MongoClient
 import os
 import bcrypt
 import requests
 
-load_dotenv()
 client = MongoClient(os.getenv("MONGO_CLIENT"))
 db = client["PCL"]
 users_collection = db["Users"]
