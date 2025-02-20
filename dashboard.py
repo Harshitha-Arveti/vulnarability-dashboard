@@ -4,11 +4,13 @@ from os_ident import get_os_identifier
 import random
 from vulnerability import vulnerabilities
 import pandas as pd
+from dotenv import load_dotenv
 from pymongo import MongoClient
 import os
 import bcrypt
 import requests
 
+load_dotenv()
 client = MongoClient(os.getenv("MONGO_CLIENT"))
 db = client["PCL"]
 users_collection = db["Users"]
@@ -106,46 +108,52 @@ def home_page():
 
 # Function to display Dashboard
 def dashboard_page():
-    st.title('Vulnerability Dashboard')
-    
-    platform = st.selectbox("Select Platform", ['Android', 'iOS', 'Windows'])
-    version = st.selectbox("Select Version", list(vulnerabilities[platform].keys()))
-    
-    st.subheader(f"Vulnerabilities in {platform} {version}")
-    for vuln in vulnerabilities[platform][version]:
-        st.write(vuln)
+    if st.session_state.login:
+        st.title('Vulnerability Dashboard')
+        
+        platform = st.selectbox("Select Platform", ['Android', 'iOS', 'Windows'])
+        version = st.selectbox("Select Version", list(vulnerabilities[platform].keys()))
+        
+        st.subheader(f"Vulnerabilities in {platform} {version}")
+        for vuln in vulnerabilities[platform][version]:
+            st.write(vuln)
+    else:
+        st.error("Please sign in to access the visualization feature.")
     
 
 # Function to create a Search Engine
 def search_engine():
-    st.title('Search Vulnerabilities')
-    search_query = st.text_input('Enter vulnerability name or keyword:')
-    
-    sheet_id = "123PV6s6z0NcmpA8HDkn0fvbWhpEW10zOBn49y_lRN5o"
-    sheet_name = "Vulnerabilities"
-    url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-    df = pd.read_csv(url, dtype=str)
+    if st.session_state.login:
+        st.title('Search Vulnerabilities')
+        search_query = st.text_input('Enter vulnerability name or keyword:')
+        
+        sheet_id = "123PV6s6z0NcmpA8HDkn0fvbWhpEW10zOBn49y_lRN5o"
+        sheet_name = "Vulnerabilities"
+        url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+        df = pd.read_csv(url, dtype=str)
 
-    m1 = df['CVE Number'].str.contains(search_query, case=False)
-    m2 = df['Description'].str.contains(search_query, case=False)
-    m3 = df['OS'].str.contains(search_query, case=False)
-    m4 = df['Version'].str.contains(search_query, case=False)
-    m5 = df['Year'].str.contains(search_query, case=False)
-    df_filtered = df[m1 | m2 | m3 | m4 | m5]
-    cards = 3
-    if search_query:
-        for n_row, row in df_filtered.reset_index().iterrows():
-            i = n_row % cards
-            if i == 0:
-                st.write('---')
-                cols = st.columns(cards, gap='large')
-            with cols[n_row % cards]:
-                st.write(row['CVE Number'])
-                st.write(row['Description'])
-                st.write(row['OS'])
-                st.write(row['Version'])
-                st.write(row['Year'])
-                st.write('---')
+        m1 = df['CVE Number'].str.contains(search_query, case=False)
+        m2 = df['Description'].str.contains(search_query, case=False)
+        m3 = df['OS'].str.contains(search_query, case=False)
+        m4 = df['Version'].str.contains(search_query, case=False)
+        m5 = df['Year'].str.contains(search_query, case=False)
+        df_filtered = df[m1 | m2 | m3 | m4 | m5]
+        cards = 3
+        if search_query:
+            for n_row, row in df_filtered.reset_index().iterrows():
+                i = n_row % cards
+                if i == 0:
+                    st.write('---')
+                    cols = st.columns(cards, gap='large')
+                with cols[n_row % cards]:
+                    st.write(row['CVE Number'])
+                    st.write(row['Description'])
+                    st.write(row['OS'])
+                    st.write(row['Version'])
+                    st.write(row['Year'])
+                    st.write('---')
+    else:
+        st.error("Please sign in to access the visualization feature.")
 
 # Function to create Sign-Up and Sign-In (basic mock)
 def auth_page():
